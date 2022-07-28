@@ -1,7 +1,7 @@
 package com.onay.minishop.domain
 
-class getShopListUseCase {
-    fun getShopList(shopItemId : Int ) : ShopItem{
-        TODO()
+class getShopListUseCase(private val shopListRepository: ShopListRepository)  {
+    fun getShopList(): List<ShopItem> {
+        return shopListRepository.getShopList()
     }
 }
