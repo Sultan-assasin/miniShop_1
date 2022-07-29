@@ -1,6 +1,6 @@
 package com.onay.minishop.domain
 // добавление в конструктордля реализаций
-class addShopListUseCase(private val shopListRepository: ShopListRepository) {
+class AddShopListUseCase(private val shopListRepository: ShopListRepository) {
 
     // private val переменная репозитория
 
