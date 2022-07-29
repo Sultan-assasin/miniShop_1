@@ -5,7 +5,9 @@ import com.onay.minishop.domain.ShopListRepository
 import java.lang.RuntimeException
 
 object ShopListRepositoryImpl : ShopListRepository {
-
+// data зависит от репоситория  и все о нем знает и наборот
+    // data слой отвечает за базу данных
+    // data слой предоставляет конкретную реализацию репозитория
 
 
     // object is single tone
