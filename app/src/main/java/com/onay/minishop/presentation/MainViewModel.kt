@@ -21,25 +21,25 @@ class MainViewModel : ViewModel() {
     private val repository = ShopListRepositoryImpl
 
     // мы подписываемься на него с activity либо с фрагметов что бы данные отобразились в реальном времени
-    val shopList = MutableLiveData<List<ShopItem>>() // череез этот код мы подписываемься на все изминения
+
         // разница между MutableLiveData и LiveData в том что в первом случае мы можем сами создавать элементы
 
     private val getShopListUseCase = GetShopListUseCase(repository)
     private val deleteShopItemUseCase = DeleteShopItemUseCase(repository)
     private val editShopListUseCase = EditShopItemUseCase(repository)
 
-    fun getShopList(){
-        val list = getShopListUseCase.getShopList() // получаем данные с нашего getShopListUseCase и отоброжаем на livedata
-        shopList.value = list // value можно вызвать только с главного потока а postValue можно вызвать на любом месте
-    }
+    val shopList = getShopListUseCase.getShopList()// череез этот код мы подписываемься на все изминения
+
+
     fun deleteShopItem(shopItem: ShopItem){
        deleteShopItemUseCase.deleteShopList(shopItem)
-        getShopList()
+
     }
-    fun editShopItem(shopItem: ShopItem){
-        val newItem = shopItem.copy(enabled = ! shopItem.enabled)
+    fun changeEnableState(shopItem: ShopItem){
+        val newItem = shopItem.copy(enabled = !shopItem.enabled)
         editShopListUseCase.editShopItem(newItem)
-        getShopList()
+
+
     }
 
 
