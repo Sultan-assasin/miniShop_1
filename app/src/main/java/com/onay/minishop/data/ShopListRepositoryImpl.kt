@@ -1,5 +1,7 @@
 package com.onay.minishop.data
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.onay.minishop.domain.ShopItem
 import com.onay.minishop.domain.ShopListRepository
 import java.lang.RuntimeException
@@ -9,10 +11,10 @@ object ShopListRepositoryImpl : ShopListRepository {
     // data слой отвечает за базу данных
     // data слой предоставляет конкретную реализацию репозитория
 
-
+    private val shopListLD = MutableLiveData<List<ShopItem>>()
     // object is single tone
 
-    private val shopList  = mutableListOf<ShopItem>()
+    private val shopList  = sortedSetOf<ShopItem>(Comparator<ShopItem> { p0, p1 -> p0.id.compareTo(p1.id) }) // сортировка по id
 
     private var autoIncrementId = 0
 
@@ -31,16 +33,20 @@ object ShopListRepositoryImpl : ShopListRepository {
         }
 
         shopList.add(shopItem)
+        updateList()
     }
 
     override fun deleteShopItem(shopItem: ShopItem) {
         shopList.remove(shopItem)
+        updateList()
     }
 
     override fun editShopItem(shopItem: ShopItem) {
         val OldElement = getShopItem(shopItem.id)
         shopList.remove(OldElement)
-        shopList.add(shopItem)
+        addShopItem(shopItem)
+
+
     }
 
     override fun getShopItem(shopItemId: Int): ShopItem {
@@ -49,7 +55,10 @@ object ShopListRepositoryImpl : ShopListRepository {
         } ?: throw  RuntimeException("Element with $shopItemId not found")
     }
 
-    override fun getShopList(): List<ShopItem> {
-        return shopList.toList()
+    override fun getShopList(): LiveData<List<ShopItem>> {
+        return shopListLD
+    }
+    private fun updateList(){
+        shopListLD.value = shopList.toList()
     }
 }

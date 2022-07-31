@@ -1,5 +1,7 @@
 package com.onay.minishop.domain
 
+import androidx.lifecycle.LiveData
+
 interface ShopListRepository {
 
    // он должен уметь то что нало нашим use кейсам
@@ -14,5 +16,5 @@ interface ShopListRepository {
 
     fun getShopItem(shopItemId: Int) : ShopItem
 
-    fun getShopList() : List<ShopItem>
+    fun getShopList() : LiveData<List<ShopItem>>
 }
