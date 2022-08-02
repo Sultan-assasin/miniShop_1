@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.onay.minishop.domain.ShopItem
 import com.onay.minishop.domain.ShopListRepository
 import java.lang.RuntimeException
+import kotlin.random.Random
 
 object ShopListRepositoryImpl : ShopListRepository {
 // data зависит от репоситория  и все о нем знает и наборот
@@ -21,8 +22,8 @@ object ShopListRepositoryImpl : ShopListRepository {
     //   что бы все методы работали и добавились данные вызываем init
 
     init {
-        for (i in 0 until 10){
-            val item = ShopItem("Name $i " , i , true)
+        for (i in 0 until 1000){
+            val item = ShopItem("Name $i " , i , Random.nextBoolean())
             addShopItem(item)
         }
     }

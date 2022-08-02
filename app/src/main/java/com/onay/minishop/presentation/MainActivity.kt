@@ -6,51 +6,39 @@ import android.view.LayoutInflater
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView
 import com.onay.minishop.R
 import com.onay.minishop.domain.ShopItem
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var llShopList : LinearLayout
+
     private lateinit var viewModel: MainViewModel
+    private lateinit var adapter : ShopListAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        llShopList = findViewById(R.id.ll_shop_list)
-
-
+        setupRecyclerView()
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-
         //здесь мы подписались на LiveData , а внутри будет реализация отоброжения элеентов
         viewModel.shopList.observe(this){
-            showList(it)
-
-
-
-
+            adapter.ShopList = it
         }
-
     }
-    private fun showList(list: List<ShopItem>) {
-        llShopList.removeAllViews()
-        for (shopItem in list) {
-            val layoutId = if (shopItem.enabled) {
-                 R.layout.item_shop_enabled // если продукт активен
-            }else
-            {
-                R.layout.item_shop_disabled // если продукт не активен
-            }
-            val view = LayoutInflater.from(this).inflate(layoutId, llShopList, false)
-            val tvName = view.findViewById<TextView>(R.id.tv_name)
-            val tvCount = view.findViewById<TextView>(R.id.tv_count)
-            tvName.text = shopItem.name
-            tvCount.text = shopItem.count.toString()
-            view.setOnLongClickListener {
-                viewModel.changeEnableState(shopItem)
-                true
-            }
-            llShopList.addView(view)
 
+    private fun setupRecyclerView() {
+        val rvShopList = findViewById<RecyclerView>(R.id.rv_shop_list)
+        adapter = ShopListAdapter()
+        rvShopList.adapter = adapter // баг был исправлен
+        with(rvShopList) {
 
+           recycledViewPool.setMaxRecycledViews(
+                ShopListAdapter.VIEW_TYPE_ENABLED,
+                ShopListAdapter.MAX_POOL_SIZE
+            )
+            recycledViewPool.setMaxRecycledViews(
+                ShopListAdapter.VIEW_TYPE_DISABLED,
+                ShopListAdapter.MAX_POOL_SIZE
+            )
         }
     }
 }
