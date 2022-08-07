@@ -6,18 +6,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.onay.minishop.R
 import com.onay.minishop.domain.ShopItem
 
 
 class ShopListAdapter : RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>() {
-
     var count = 0
     var shopList = listOf<ShopItem>()
         set(value) {
+            val callback = ShopListDiffCallback(shopList ,value)
+            val diffResult = DiffUtil.calculateDiff(callback) // здесь все наши методы запускаються
+            // и новые данные будут присвоены к diffResult
+            diffResult.dispatchUpdatesTo(this) // здесь мы сообщяем адаптеру об изминениях
             field = value
-            notifyDataSetChanged()
+
         }
 
     var onShopItemLongClickListener: ((ShopItem) -> Unit)? = null
