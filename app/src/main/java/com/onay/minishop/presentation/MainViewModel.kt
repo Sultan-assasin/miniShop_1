@@ -1,6 +1,5 @@
 package com.onay.minishop.presentation
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.onay.minishop.data.ShopListRepositoryImpl // здесь мы исползуем data слой и пока она не сответствует к предстовлениям
 import com.onay.minishop.domain.DeleteShopItemUseCase
@@ -14,8 +13,6 @@ import com.onay.minishop.domain.ShopItem
 // в чистой архитектуре presentation слой знает все domain слое б но ничего не знеат о data слое
 //
 
-
-
 // если context нужен то мы наследуемься от AndroidViewModel a если не нужен то от ViewModel
 class MainViewModel : ViewModel() {
     private val repository = ShopListRepositoryImpl
@@ -28,7 +25,7 @@ class MainViewModel : ViewModel() {
     private val deleteShopItemUseCase = DeleteShopItemUseCase(repository)
     private val editShopListUseCase = EditShopItemUseCase(repository)
 
-    val shopList = getShopListUseCase.getShopList()// череез этот код мы подписываемься на все изминения
+    val shopList = getShopListUseCase.getShopList()// через этот код мы подписываемься на все изминения
 
 
     fun deleteShopItem(shopItem: ShopItem){
