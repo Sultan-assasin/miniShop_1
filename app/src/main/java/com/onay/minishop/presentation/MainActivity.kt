@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         //здесь мы подписались на LiveData , а внутри будет реализация отоброжения элеентов
         viewModel.shopList.observe(this){
-            shopListAdapter.shopList = it
+            shopListAdapter.submitList(it)  // установка нового списка  в адаптер
         }
     }
 
@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity() {
            }
 
            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-               val item = shopListAdapter.shopList[viewHolder.adapterPosition] // получили обьект
+               val item = shopListAdapter.currentList[viewHolder.adapterPosition] // получили обьект
                viewModel.deleteShopItem(item)
 
            }
