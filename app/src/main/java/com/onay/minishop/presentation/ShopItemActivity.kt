@@ -14,32 +14,11 @@ import com.onay.minishop.R
 import com.onay.minishop.domain.ShopItem
 
 class ShopItemActivity : AppCompatActivity() {
-/*
-    private lateinit var viewModel: ShopItemViewModel
 
-    private lateinit var tilName: TextInputLayout
-    private lateinit var tilCount: TextInputLayout
-    private lateinit var etName: EditText
-    private lateinit var etCount: EditText
-    private lateinit var buttonSave: Button
-
-    private var screenMode = MODE_UNKNOWN
-    private var shopItemId = ShopItem.UNDEFINED_ID
-
-
- */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_shop_item)
-    /*
-        parseIntent()
-        viewModel = ViewModelProvider(this)[ShopItemViewModel::class.java]
-        initViews()
-        addTextChangeListeners()
-        launchRightMode()
-        observeViewModel()
 
-     */
     }
     /*
 
