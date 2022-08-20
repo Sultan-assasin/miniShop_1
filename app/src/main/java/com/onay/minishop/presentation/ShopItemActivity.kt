@@ -8,6 +8,7 @@ import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.textfield.TextInputLayout
 import com.onay.minishop.R
@@ -22,7 +23,6 @@ class ShopItemActivity : AppCompatActivity() {
         setContentView(R.layout.activity_shop_item)
         parseIntent()
         launchRightMode()
-
     }
 
 
@@ -34,64 +34,10 @@ class ShopItemActivity : AppCompatActivity() {
             else -> throw RuntimeException("Unknown screen mode $screenMode")
         }
         supportFragmentManager.beginTransaction()
-            .add(R.id.shop_item_container, fragment)
+            .replace(R.id.shop_item_container, fragment)
             .commit()
     }
-    /*
 
-  private fun addTextChangeListeners() {
-      etName.addTextChangedListener(object : TextWatcher {
-          override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-          }
-
-          override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-              viewModel.resetErrorInputName()
-          }
-
-          override fun afterTextChanged(s: Editable?) {
-          }
-      })
-      etCount.addTextChangedListener(object : TextWatcher {
-          override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-          }
-
-          override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-              viewModel.resetErrorInputCount()
-          }
-
-          override fun afterTextChanged(s: Editable?) {
-          }
-      })
-  }
-
-  private fun launchEditMode() {
-      viewModel.getShopItem(shopItemId)
-      viewModel.shopItem.observe(this) {
-          etName.setText(it.name)
-          etCount.setText(it.count.toString())
-      }
-      buttonSave.setOnClickListener {
-          viewModel.editShopItem(etName.text?.toString(), etCount.text?.toString())
-      }
-  }
-
-  private fun launchAddMode() {
-      buttonSave.setOnClickListener {
-          viewModel.addShopItem(etName.text?.toString(), etCount.text?.toString())
-      }
-  }
-
-
-
-  private fun initViews() {
-      tilName = findViewById(R.id.til_name)
-      tilCount = findViewById(R.id.til_count)
-      etName = findViewById(R.id.et_name)
-      etCount = findViewById(R.id.et_count)
-      buttonSave = findViewById(R.id.save_button)
-  }
-
-   */
     private fun parseIntent() {
         if (!intent.hasExtra(EXTRA_SCREEN_MODE)) {
             throw RuntimeException("Param screen mode is absent")
