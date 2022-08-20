@@ -38,8 +38,13 @@ class ShopItemFragment : Fragment() {
 
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         parseParam()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         viewModel = ViewModelProvider(this)[ShopItemViewModel::class.java]
         initViews(view)
         addTextChangeListeners()
