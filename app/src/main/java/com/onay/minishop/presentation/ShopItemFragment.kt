@@ -1,7 +1,6 @@
 package com.onay.minishop.presentation
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -15,7 +14,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.textfield.TextInputLayout
 import com.onay.minishop.R
 import com.onay.minishop.domain.ShopItem
-import java.lang.RuntimeException
 
 
 class ShopItemFragment : Fragment() {
@@ -26,16 +24,26 @@ class ShopItemFragment : Fragment() {
     private lateinit var etName: EditText
     private lateinit var etCount: EditText
     private lateinit var buttonSave: Button
+    private lateinit var onEditingFinisedListener: OnEditingFinisedListener
 
-    var screenMode : String = MODE_UNKNOWN
-    var shopItemId : Int= ShopItem.UNDEFINED_ID
+    var screenMode: String = MODE_UNKNOWN
+    var shopItemId: Int = ShopItem.UNDEFINED_ID
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return  inflater.inflate(R.layout.fragment_shop_item, container , false)
+        return inflater.inflate(R.layout.fragment_shop_item, container, false)
 
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnEditingFinisedListener) {
+            onEditingFinisedListener = context
+        } else {
+            throw RuntimeException("listener is bot implemented")
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -126,16 +134,16 @@ class ShopItemFragment : Fragment() {
 
     private fun parseParam() {
         val args = requireArguments()
-        if(!args.containsKey(SCREEN_MODE)){
+        if (!args.containsKey(SCREEN_MODE)) {
             throw RuntimeException("Param screen is absent")
         }
         val mode = args.getString(SCREEN_MODE)
-        if(mode!= MODE_EDIT && mode != MODE_ADD){
+        if (mode != MODE_EDIT && mode != MODE_ADD) {
             throw RuntimeException("Unknown screen mode $mode")
         }
         screenMode = mode
-        if(screenMode== MODE_EDIT){
-            if(!args.containsKey(SHOP_ITEM_ID)){
+        if (screenMode == MODE_EDIT) {
+            if (!args.containsKey(SHOP_ITEM_ID)) {
                 throw RuntimeException("Param shop Item is absent")
             }
             shopItemId = args.getInt(SHOP_ITEM_ID, ShopItem.UNDEFINED_ID)
@@ -151,6 +159,10 @@ class ShopItemFragment : Fragment() {
         buttonSave = view.findViewById(R.id.save_button)
     }
 
+    interface OnEditingFinisedListener {
+        fun onEditingFinisedListener()
+    }
+
     companion object {
 
         private const val SCREEN_MODE = "extra_mode"
@@ -159,18 +171,19 @@ class ShopItemFragment : Fragment() {
         private const val MODE_ADD = "mode_add"
         private const val MODE_UNKNOWN = ""
 
-        fun newInstanceAddItem() : ShopItemFragment{
+        fun newInstanceAddItem(): ShopItemFragment {
             return ShopItemFragment().apply {
                 arguments = Bundle().apply {
-                    putString(SCREEN_MODE , MODE_ADD)
+                    putString(SCREEN_MODE, MODE_ADD)
                 }
             }
         }
-        fun newInstanceEditMode(shopItemId: Int) : ShopItemFragment{
+
+        fun newInstanceEditMode(shopItemId: Int): ShopItemFragment {
             return ShopItemFragment().apply {
                 arguments = Bundle().apply {
-                    putString(SCREEN_MODE , MODE_EDIT)
-                    putInt(SHOP_ITEM_ID , shopItemId)
+                    putString(SCREEN_MODE, MODE_EDIT)
+                    putInt(SHOP_ITEM_ID, shopItemId)
                 }
             }
         }
