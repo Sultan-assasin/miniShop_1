@@ -3,18 +3,12 @@ package com.onay.minishop.presentation
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.widget.Button
-import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentContainerView
-import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.textfield.TextInputLayout
 import com.onay.minishop.R
 import com.onay.minishop.domain.ShopItem
 
-class ShopItemActivity : AppCompatActivity() {
+class ShopItemActivity : AppCompatActivity() , ShopItemFragment.OnEditingFinisedListener {
     private var screenMode = MODE_UNKNOWN
     private var shopItemId = ShopItem.UNDEFINED_ID
 
@@ -75,4 +69,11 @@ class ShopItemActivity : AppCompatActivity() {
             return intent
         }
     }
+
+    override fun onEditingFinisedListener() {
+        Toast.makeText(this, "finished" , Toast.LENGTH_SHORT).show()
+        finish()
+    }
+
+
 }
