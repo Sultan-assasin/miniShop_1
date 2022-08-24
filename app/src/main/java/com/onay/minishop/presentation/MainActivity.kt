@@ -67,21 +67,6 @@ class MainActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinisedListe
 
     }
 
-    /*
-    private fun AlbomOrientation(){ спасибо тебе
-        if(shopItemContainer != null){
-            val fragment = when (screenMode) {
-                MODE_EDIT -> ShopItemFragment.newInstanceEditMode(shopItemId)
-                MODE_ADD ->   ShopItemFragment.newInstanceAddItem()
-                else -> throw RuntimeException("Unknown screen mode $screenMode")
-            }
-            supportFragmentManager.beginTransaction()
-                .add(R.id.fragment_middle, fragment)
-                .commit()
-        }
-    }
-
-     */
     private fun isOnePaneMode(): Boolean {
         return shopItemContainer == null
     }

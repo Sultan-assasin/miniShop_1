@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,16 +30,18 @@ class ShopItemFragment : Fragment() {
     var screenMode: String = MODE_UNKNOWN
     var shopItemId: Int = ShopItem.UNDEFINED_ID
     override fun onCreateView(
+
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_shop_item, container, false)
-
+        Log.d("lifecycle_fragment", "onCreateView")
     }
 
-    override fun onAttach(context: Context) {
+    override fun onAttach(context: Context) { // в мотоде onAttach фрагмент прикрепляеться к активити
         super.onAttach(context)
+        Log.d("lifecycle_fragment", "onAttach")
         if (context is OnEditingFinisedListener) {
             onEditingFinisedListener = context
         } else {
@@ -47,12 +50,47 @@ class ShopItemFragment : Fragment() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d("lifecycle_fragment", "onCreate")
         super.onCreate(savedInstanceState)
         parseParam()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onStart() {
+        Log.d("lifecycle_fragment", "onStart")
+        super.onStart()
+    }
 
+    override fun onResume() {
+        super.onResume()
+        Log.d("lifecycle_fragment", "onResume")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("lifecycle_fragment", "onPause")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d("lifecycle_fragment", "onStop")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.d("lifecycle_fragment", "onDestroyView")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("lifecycle_fragment", "onDestroy")
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        Log.d("lifecycle_fragment", "onDetach")
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Log.d("lifecycle_fragment", "onViewCreated")
         viewModel = ViewModelProvider(this)[ShopItemViewModel::class.java]
         initViews(view)
         addTextChangeListeners()
