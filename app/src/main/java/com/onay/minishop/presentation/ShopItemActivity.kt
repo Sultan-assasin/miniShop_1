@@ -3,12 +3,12 @@ package com.onay.minishop.presentation
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.onay.minishop.R
 import com.onay.minishop.domain.ShopItem
 
-class ShopItemActivity : AppCompatActivity() , ShopItemFragment.OnEditingFinisedListener {
+class ShopItemActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinishedListener {
+
     private var screenMode = MODE_UNKNOWN
     private var shopItemId = ShopItem.UNDEFINED_ID
 
@@ -16,16 +16,20 @@ class ShopItemActivity : AppCompatActivity() , ShopItemFragment.OnEditingFinised
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_shop_item)
         parseIntent()
-        launchRightMode()
+        if (savedInstanceState == null) {
+            launchRightMode()
+        }
     }
 
-
+    override fun onEditingFinished() {
+        finish()
+    }
 
     private fun launchRightMode() {
         val fragment = when (screenMode) {
-            MODE_EDIT -> ShopItemFragment.newInstanceEditMode(shopItemId)
-            MODE_ADD -> ShopItemFragment.newInstanceAddItem()
-            else -> throw RuntimeException("Unknown screen mode $screenMode")
+            MODE_EDIT -> ShopItemFragment.newInstanceEditItem(shopItemId)
+            MODE_ADD  -> ShopItemFragment.newInstanceAddItem()
+            else      -> throw RuntimeException("Unknown screen mode $screenMode")
         }
         supportFragmentManager.beginTransaction()
             .replace(R.id.shop_item_container, fragment)
@@ -62,6 +66,7 @@ class ShopItemActivity : AppCompatActivity() , ShopItemFragment.OnEditingFinised
             intent.putExtra(EXTRA_SCREEN_MODE, MODE_ADD)
             return intent
         }
+
         fun newIntentEditItem(context: Context, shopItemId: Int): Intent {
             val intent = Intent(context, ShopItemActivity::class.java)
             intent.putExtra(EXTRA_SCREEN_MODE, MODE_EDIT)
@@ -69,11 +74,4 @@ class ShopItemActivity : AppCompatActivity() , ShopItemFragment.OnEditingFinised
             return intent
         }
     }
-
-    override fun onEditingFinisedListener() {
-        Toast.makeText(this, "finished" , Toast.LENGTH_SHORT).show()
-        finish()
-    }
-
-
 }
